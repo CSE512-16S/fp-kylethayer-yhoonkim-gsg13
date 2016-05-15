@@ -1,0 +1,59 @@
+<html>
+<head>
+<script type="text/javascript" src="color-utils.js"></script>
+<script>
+function makeColors(){
+  var n = 60;
+  var sValues = 3;
+  var vValues = 3;
+  var body = document.getElementsByTagName("BODY")[0];
+  count = 0;
+
+  var str = ""
+  for(var i = 0; i <= n ; i++){
+	count++;
+	var h = 1.0 * i / n;
+	var s = 1.0;
+	var v = 1.0;
+	var rgb = HSVtoRGB(h, s, v);
+	str += "<DIV style='background-color:rgb("+rgb.r+","+rgb.g+","+rgb.b+");margin-bottom:1px' width = '10px' height = '10px'>"+count+" - hsv:" + h + "," + s + "," + v + " - rgb: "+rgb.r+","+rgb.g+","+rgb.b+"</DIV>"
+ }
+
+ count = 0;
+ str += "<br><bR>";
+
+	for(var k = 0; k < vValues; k++){
+		count++;
+		var h = 0;
+		var s = 0;
+		var v = 1 - 1.0 * k / (vValues + 1);
+		var rgb = HSVtoRGB(h, s, v);
+		str += "<DIV style='background-color:rgb("+rgb.r+","+rgb.g+","+rgb.b+");margin-bottom:1px' width = '10px' height = '10px'>"+count+" - hsv:" + h + "," + s + "," + v + " - rgb: "+rgb.r+","+rgb.g+","+rgb.b+"</DIV>"
+	}
+	var h = 0;
+	var s = 0;
+	var v = 0;
+	var rgb = HSVtoRGB(h, s, v);
+	str += "<DIV style='background-color:rgb("+rgb.r+","+rgb.g+","+rgb.b+");margin-bottom:1px' width = '10px' height = '10px'>"+count+" - hsv:" + h + "," + s + "," + v + " - rgb: "+rgb.r+","+rgb.g+","+rgb.b+"</DIV>"
+
+ for(var i = 0; i <= n ; i++){
+	for(var j = 0; j < sValues; j++){
+		for(var k = 0; k < vValues; k++){
+			count++;
+			var h = 1.0 * i / n;
+			var s = 1 - 1.0 * j / (sValues + 1);
+			var v = 1 - 1.0 * k/ (vValues + 1);
+			var rgb = HSVtoRGB(h, s, v);
+			str += "<DIV style='background-color:rgb("+rgb.r+","+rgb.g+","+rgb.b+");margin-bottom:1px' width = '10px' height = '10px'>"+count+" - hsv:" + h + "," + s + "," + v + " - rgb: "+rgb.r+","+rgb.g+","+rgb.b+"</DIV>"
+
+		}
+	}
+ }
+ body.innerHTML = str;
+}
+</script>
+</head>
+<body onload = "makeColors()">
+
+</body>
+</html>
