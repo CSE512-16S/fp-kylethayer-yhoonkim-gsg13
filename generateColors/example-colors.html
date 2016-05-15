@@ -4,12 +4,20 @@
 <script src="../js/jquery-1.12.0.min.js"></script>
 <script src="../js/d3.min.js"></script>
 <script>
+function labDist(lab1, lab2){
+	return Math.sqrt(
+		Math.pow(lab1.l - lab2.l, 2) + 
+		Math.pow(lab1.a - lab2.a, 2) +
+		Math.pow(lab1.b - lab2.b, 2));
+}
+
 function makeColors(){
 
   orderedRGBValues = [];
   rgbValuesFound = {};
 
 
+  //generate all RGB values where s=1 and v = 1
   var n = 50000;
   for(var i = 0; i <= n ; i++){
 	var h = 1.0 * i / n;
@@ -22,15 +30,87 @@ function makeColors(){
 		orderedRGBValues.push(rgb);
 	}
   }
+  
+  //find LAB distances for the ordered RGB values
+  orderedRGBWithDistance = [];
+  total_dist = 0;
+  //first find LAB of all colors
+  for(var i = 0; i < orderedRGBValues.length; i++){
+	var val = orderedRGBValues[i];
+	var rgb = d3.rgb(val.r, val.g, val.b)
+	var lab_color = d3.lab(rgb);
+	
+	var prevIndex = i - 1;
+	if(prevIndex < 0){
+		prevIndex += orderedRGBValues.length;
+	}
+	var nextIndex = i + 1;
+	if(nextIndex > orderedRGBValues.length - 1){
+		nextIndex -= orderedRGBValues.length;
+	}
+	
+	//find the LAB distances of the prev and next LAB numbers
+	var prevRGB = orderedRGBValues[prevIndex];
+	var prevLAB = d3.lab(d3.rgb(prevRGB.r, prevRGB.g, prevRGB.b));
+	var prevDist = labDist(lab_color, prevLAB);
+	
+	var nextRGB = orderedRGBValues[nextIndex];
+	var nextLAB = d3.lab(d3.rgb(nextRGB.r, nextRGB.g, nextRGB.b));
+	var nextDist = labDist(lab_color, nextLAB);
+	
+	var neighbor_dist = prevDist + nextDist / 2;
+	
+	orderedRGBWithDistance.push({
+		rgb: rgb,
+		lab: lab_color,
+		neighbor_dist: neighbor_dist,
+		cummulative_dist: total_dist,
+	});
+	
+	total_dist += neighbor_dist
+
+	
+  }
  
    
   var body = document.getElementsByTagName("BODY")[0];
   var str = ""
-  for(var i = 0; i < orderedRGBValues.length; i++){
-	var rgb = orderedRGBValues[i];
-	str += "<DIV style='background-color:rgb("+rgb.r+","+rgb.g+","+rgb.b+");margin-bottom:1px' width = '10px' height = '10px'>"+i+" - hsv:" + h + "," + s + "," + v + " - rgb: "+rgb.r+","+rgb.g+","+rgb.b+"</DIV>";
+  
+  //unscaled colors
+  str+="<p>unscaled colors</p>";
+  for(var i = 0; i < orderedRGBWithDistance.length; i++){
+	var colorInfo = orderedRGBWithDistance[i];
+	var rgb = colorInfo.rgb;
+	str += "<DIV style='background-color:rgb("+rgb.r+","+rgb.g+","+rgb.b+");height:10px;width:0.63px;float:left'></DIV>";
+  }
+  
+  str+= "<br><br>";
+  str+="<p>lab scaled colors</p>";
+  
+  //scaled colors
+  for(var i = 0; i < orderedRGBWithDistance.length; i++){
+	var colorInfo = orderedRGBWithDistance[i];
+	var rgb = colorInfo.rgb;
+	var dist = colorInfo.neighbor_dist;
+	str += "<DIV style='background-color:rgb("+rgb.r+","+rgb.g+","+rgb.b+");height:10px;width:"+(1*dist)+"px;float:left'></DIV>";
+  }
+  
+  str+= "<br><br>";
+  
+  str+="<p>color info</p>";
+  
+  //color info
+  for(var i = 0; i < orderedRGBWithDistance.length; i++){
+    var colorInfo = orderedRGBWithDistance[i]
+	var rgb = colorInfo.rgb;
+	var neighbor_dist = colorInfo.neighbor_dist;
+	
+	str += "<DIV style='background-color:rgb("+rgb.r+","+rgb.g+","+rgb.b+");margin-bottom:1px' width = '10px' height = '10px'>"+i+" - rgb: "+rgb.r+","+rgb.g+","+rgb.b+" - neighbor_dist: " + neighbor_dist + " - cummulative_dist: " + colorInfo.cummulative_dist+ "</DIV>";
   }
 
+  
+  str+=JSON.stringify(orderedRGBWithDistance);
+  
   body.innerHTML = str;
 }
 </script>
