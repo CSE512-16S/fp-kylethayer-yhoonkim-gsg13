@@ -1,14 +1,17 @@
 var R = 31;
 var labColors = [], labColorsBuffer = [], newLabColors=[];
 var L=0;
-var width = 800, height=40;
-var N = 100, M = 20;
+var width = 800, height=20;
+var N = 120, M =500;
+var rStep = .01, rStart = 37;
 var maxRs = [];
 for (var j = 0; j < (M-1); j++) {
-  L += 100/M;
+  //L += 100/M;
+  L = 70 + j * 5 / M;
   labColorsBuffer = [];
 
-  for (var r = 0; r < 50; r++) {
+  for (var r_temp = 0; r_temp < 50 /rStep; r_temp++) {
+	var r = rStart + r_temp * rStep;
     newLabColors = [];
     for (var i = 0; i < N; i++) {
       var a = r * Math.cos(2 * Math.PI * (i/N));
@@ -34,7 +37,7 @@ for (var j = 0; j < (M-1); j++) {
 console.log(maxRs.map(function(item){ return "(L = " + item.L + ", R = " + item.R +")"; }));
 
 var svg = d3.select('body').append('svg')
-            .attr('width', width+50+20)
+            .attr('width', width+50+20+40)
             .attr('height', height * M );
 
 
@@ -67,9 +70,15 @@ var radius = svg.selectAll('.radius')
 radius.append('text')
       .attr('x', function(d, i){ return width + d.R; })
       .attr('y', function(d, i){ return i * height +height; })
-      .text(function(d){ return d.R; });
+      .text(function(d){ 
+		var num = parseFloat(d.R)
+		return num.toFixed(2); 
+	  });
 radius.append('text')
       .attr('x', function(d, i){ return width-20; })
       .attr('y', function(d, i){ return i * height +height; })
-      .text(function(d){ return d.L; });
+      .text(function(d){ 
+		var num = parseFloat(d.L)
+		return num.toFixed(2); 
+	   });
 
