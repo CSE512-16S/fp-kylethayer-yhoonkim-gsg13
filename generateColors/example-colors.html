@@ -18,18 +18,33 @@ function makeColors(){
 
 
   //generate all RGB values where s=1 and v = 1
-  var n = 50000;
-  for(var i = 0; i <= n ; i++){
-	var h = 1.0 * i / n;
-	var s = 1.0;
-	var v = 1.0;
-	var rgb = HSVtoRGB(h, s, v);
-	var rgb_string = ""+rgb.r+","+rgb.g+","+rgb.b;
-	if(!rgbValuesFound[rgb_string]){
-		rgbValuesFound[rgb_string] = true;
-		orderedRGBValues.push(rgb);
-	}
-  }
+  var n = 500000;
+  // for(var i = 0; i <= n ; i++){
+  // 	var h = 1.0 * i / n;
+  // 	var s = 1.0;
+  // 	var v = 1.0;
+  // 	var rgb = HSVtoRGB(h, s, v);
+  // 	var rgb_string = ""+rgb.r+","+rgb.g+","+rgb.b;
+  // 	if(!rgbValuesFound[rgb_string]){
+  // 		rgbValuesFound[rgb_string] = true;
+  // 		orderedRGBValues.push(rgb);
+  // 	}
+  // }
+  var R = 255, G=0, B=0;
+  var forloopDirection = [[0,1,0],[-1,0,0],[0,0,1],[0,-1,0],[1,0,0],[0,0,-1]];
+  for (var j = 0; j < forloopDirection.length; j++) {
+    for (var i = 0; i < 256; i++) {
+      var rgb = {r: R, g:G, b:B};
+      var rgb_string = ""+rgb.r+","+rgb.g+","+rgb.b;
+      if(!rgbValuesFound[rgb_string]){
+        rgbValuesFound[rgb_string] = true;
+        orderedRGBValues.push(rgb);
+      }
+      R +=forloopDirection[j][0];
+      G +=forloopDirection[j][1];
+      B +=forloopDirection[j][2];
+    };  
+  };
   
   //find LAB distances for the ordered RGB values
   orderedRGBWithDistance = [];

@@ -1,6 +1,6 @@
 var colorSet, colorSet1Trimed;
 $(document).on('ready page:load', function () {
-  var N = 20;
+  var N = 30;
   var setN = 4;
   colorSets = [];
   

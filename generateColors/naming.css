@@ -1,0 +1,15 @@
+.color-row { 
+ width: 100%;
+}
+.color-column { 
+  float: left;
+  width: 25%;
+  
+  padding: 1px;
+}
+
+
+.color-column div{
+  width: 100%;
+  height: 20px;
+}
