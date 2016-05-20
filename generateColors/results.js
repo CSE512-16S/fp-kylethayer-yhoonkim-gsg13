@@ -66,13 +66,26 @@ $(document).on('ready page:load', function () {
                          .attr('height', height )
                          .attr('fill', function(d){ return d.color.rgb(); });
 
-  var errorBars = colors.append('rect')
-                         .attr('x', function(d){ return x(d.index); })
-                         .attr('y', function(d){ return height - y(d.error); } )
-                         .attr('width', function(d){ return x(d.index+1)-x(d.index);})
-                         .attr('height', function(d){ return y(d.error); })
-                         .attr('fill', '#fff')
-                         .attr('opacity', 0.7);
+  // var errorBars = colors.append('rect')
+  //                        .attr('x', function(d){ return x(d.index); })
+  //                        .attr('y', function(d){ return height - y(d.error); } )
+  //                        .attr('width', function(d){ return x(d.index+1)-x(d.index);})
+  //                        .attr('height', function(d){ return y(d.error); })
+  //                        .attr('fill', '#fff')
+  //                        .attr('opacity', 0.7);
+
+  var line = d3.svg.line()
+      .x(function(d){ return (x(d.index+1)+x(d.index))/2; })
+      .y(function(d){ return height - y(d.error); })
+      .interpolate('basis');
+
+  svg.append('path')
+        .attr("d", line(results))
+        .attr("stroke", "white")
+        .attr("stroke-width", 2)
+        .attr("fill", "none");
+
+                         
 
 
   var score = 1 - results.reduce(function(prev,curr){ 
