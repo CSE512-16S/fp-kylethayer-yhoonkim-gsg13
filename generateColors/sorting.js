@@ -6,7 +6,7 @@ $(document).on('ready page:load', function () {
   
   for (var i = 0; i < setN; i++) {
     colorSets.push(makeColorSet(N, 40.26, 2*Math.PI/setN*i, 2*Math.PI/setN*(i+1), 74.03));
-    $('#sortables').append('<div class="sortable"></div>');
+    $('#sortables').append('<div class="sortable"><input type="hidden" id="sequnce'+i+'" name="sequence'+i+'"></div></div>')
   };
   
 
@@ -15,17 +15,19 @@ $(document).on('ready page:load', function () {
     var $itemDiv = $('<div class="color-patch"></div>');
     var colorSet = colorSets[index];
 
-    $sortable.append($itemDiv.clone().addClass('static').append($('<div></div>').css('background-color',colorSet.splice(0,1)[0].rgb().toString())));
+    $sortable.append($itemDiv.clone().addClass('static').append($('<div></div>').css('background-color',colorSet.splice(0,1)[0].color.rgb().toString())));
 
     colorSet1Trimed = shuffle(colorSet.splice(0,colorSet.length-1));
     for (var i = 0; i < colorSet1Trimed.length; i++) {
-      $sortable.append($itemDiv.clone().append($('<div></div>').css('background-color',colorSet1Trimed[i].rgb().toString())));
+      $sortable.append($itemDiv.clone().data('index',colorSet1Trimed[i].index).append($('<div></div>').css('background-color',colorSet1Trimed[i].color.rgb().toString())));
     };
-    $sortable.append($itemDiv.clone().addClass('static').append($('<div></div>').css('background-color',colorSet.splice(0,1)[0].rgb().toString())));
+    $sortable.append($itemDiv.clone().addClass('static').append($('<div></div>').css('background-color',colorSet.splice(0,1)[0].color.rgb().toString())));
+ 
 
     $('.color-patch ').height($('.color-patch ').width());
     $sortable.height($('.color-patch ').width())
     $sortable.sortable({
+      tolerance: "pointer",
       revert: false,
       placeholder: "color-patch-placeholder",
       forcePlaceholderSize: false,
@@ -52,10 +54,11 @@ $(document).on('ready page:load', function () {
               $this.insertAfter($('div.color-patch', $sortable).eq(target));
               $('.static-helper').eq(0).remove();
           });
-      }
+      },
+      update: function(){ updateSequence(this); }
     });
     $sortable.disableSelection();
-
+    updateSequence(this);
   });
 
   
@@ -67,10 +70,20 @@ $(document).on('ready page:load', function () {
       var a = r * Math.cos( (endAngle-startAngle) * (i/N) + startAngle);
       var b = r * Math.sin( (endAngle-startAngle) * (i/N) + startAngle);
       var labColor = d3.lab(L,a,b);
-      newLabColors.push(labColor);
+      newLabColors.push({"index":i, "color":labColor});
     }  
     return newLabColors;
   }
+
+
+  function updateSequence(sortable){
+    var currentSequence = [];
+    $('.color-patch:not(.static)', sortable).each(function(){
+      currentSequence.push($(this).data('index'));
+    });
+    $('input', sortable).val(currentSequence.join(','));
+  }
+
 });
 
 function shuffle(array) {

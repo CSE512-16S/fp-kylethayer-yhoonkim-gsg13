@@ -4,10 +4,11 @@
 .color-column { 
   float: left;
   width: 25%;
-  
-  padding: 1px;
+  padding: 10px;
 }
-
+.color-column input{
+  width: 100%;
+}
 
 .color-column div{
   width: 100%;
