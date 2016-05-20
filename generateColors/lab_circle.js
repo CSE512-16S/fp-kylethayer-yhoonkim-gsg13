@@ -2,11 +2,14 @@ var R = 31;
 var labColors = [], labColorsBuffer = [], newLabColors=[];
 var L=0;
 var width = 800, height=20;
-var N = 120, M =500;
+//var N = 120, M =500;
+var N = 90, M =500;
+//var rStep = .01, rStart = 37;
 var rStep = .01, rStart = 37;
 var maxRs = [];
 for (var j = 0; j < (M-1); j++) {
   //L += 100/M;
+  //L = 70 + j * 5 / M;
   L = 70 + j * 5 / M;
   labColorsBuffer = [];
 
