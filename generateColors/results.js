@@ -1,14 +1,20 @@
 //lets assume we have userResponses like this.
 var userResponses = [];
 // userResponses.push([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28]);
-userResponses.push([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28]);
-userResponses.push([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28]);
+// userResponses.push([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28]);
+// userResponses.push([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28]);
+// userResponses.push([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28]);
+// userResponses.push([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28]);
 // userResponses.push([5,14,4,18,9,24,12,26,27,16,25,11,22,6,21,28,13,23,7,3,19,8,10,15,2,1,17,20]);
 // userResponses.push([5,14,4,18,9,24,12,26,27,16,25,11,22,6,21,28,13,23,7,3,19,8,10,15,2,1,17,20]);
-userResponses.push([5,14,4,18,9,24,12,26,27,16,25,11,22,6,21,28,13,23,7,3,19,8,10,15,2,1,17,20]);
-userResponses.push([5,14,4,18,9,24,12,26,27,16,25,11,22,6,21,28,13,23,7,3,19,8,10,15,2,1,17,20]);
+// userResponses.push([5,14,4,18,9,24,12,26,27,16,25,11,22,6,21,28,13,23,7,3,19,8,10,15,2,1,17,20]);
+// userResponses.push([5,14,4,18,9,24,12,26,27,16,25,11,22,6,21,28,13,23,7,3,19,8,10,15,2,1,17,20]);
 // userResponses.push([15,21,4,11,27,16,18,14,3,23,22,20,9,24,26,6,8,13,25,7,1,19,17,2,28,10,5,12]);
-// userResponses.push([19,6,21,22,20,2,10,4,8,13,11,18,1,24,9,7,17,5,16,12,15,14,27,28,25,26,23,3]);
+userResponses.push([28,6,21,22,20,2,10,4,8,13,11,18,1,24,9,7,17,5,16,12,15,14,27,19,25,26,23,3]);
+userResponses.push([19,6,21,22,20,2,10,4,8,13,11,18,1,24,9,7,17,5,16,12,15,14,27,28,25,26,23,3]);
+userResponses.push([19,6,21,22,20,2,10,4,8,13,11,18,1,24,9,7,17,5,16,12,15,14,27,28,25,26,23,3]);
+userResponses.push([19,6,21,22,20,2,10,4,8,13,11,18,1,24,9,7,17,5,16,12,15,14,27,28,25,26,23,3]);
+
 
 
 //lets assume the all users' score is like this.
@@ -49,6 +55,23 @@ $(document).on('ready page:load', function () {
 
   drawSpectrum();
   drawHistogram(score);
+  drawingWrongAnswers();
+
+  function drawingWrongAnswers(){
+    var maxError = N-3;
+    var size = d3.scale.linear()
+      .rangeRound([20, 50])
+      .domain([0, maxError]);
+
+    for (var i = 0; i < results.length; i++) {
+      if( results[i].error !== 0 ){
+        var patch = $('<div style="width: ' + size(results[i].error) + 'px; height: '+ size(results[i].error) +'px;" class="wrong-color-patch"></div>')
+          .append('<div style="width:100%; height:100%; background-color:'+results[i].color.rgb()+';"></div>');
+        $('#wrong-colors').append(patch);
+      }
+    };
+    
+  }
 
   
   function drawHistogram(score){

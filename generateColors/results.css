@@ -156,3 +156,13 @@
 #spectrum{
   text-align: center;
 }
+#wrong-color{
+  display: inline-block;
+}
+.wrong-color-patch{
+  display: inline-block;
+  padding: 1px;
+}
+.wrong-color-patch div{
+  border-radius: 5px;
+}
