@@ -10,12 +10,12 @@ var userResponses = [];
 // userResponses.push([5,14,4,18,9,24,12,26,27,16,25,11,22,6,21,28,13,23,7,3,19,8,10,15,2,1,17,20]);
 // userResponses.push([5,14,4,18,9,24,12,26,27,16,25,11,22,6,21,28,13,23,7,3,19,8,10,15,2,1,17,20]);
 // userResponses.push([15,21,4,11,27,16,18,14,3,23,22,20,9,24,26,6,8,13,25,7,1,19,17,2,28,10,5,12]);
-userResponses.push([28,6,21,22,20,2,10,4,8,13,11,18,1,24,9,7,17,5,16,12,15,14,27,19,25,26,23,3]);
-userResponses.push([19,6,21,22,20,2,10,4,8,13,11,18,1,24,9,7,17,5,16,12,15,14,27,28,25,26,23,3]);
-userResponses.push([19,6,21,22,20,2,10,4,8,13,11,18,1,24,9,7,17,5,16,12,15,14,27,28,25,26,23,3]);
-userResponses.push([19,6,21,22,20,2,10,4,8,13,11,18,1,24,9,7,17,5,16,12,15,14,27,28,25,26,23,3]);
-
-
+userResponses.push([1,2,4,3,5,6,7,9,8,10,11,12,13,15,14]);
+    userResponses.push([1,2,3,4,5,6,7,8,9,10,11,12,14,13,15]);
+    userResponses.push([1,5,3,4,2,6,7,12,9,11,10,8,13,15,14]);
+    userResponses.push([1,2,4,3,5,6,7,9,8,10,11,12,13,15,14]);
+    userResponses.push([1,2,4,3,5,6,7,9,8,10,11,12,13,15,14]);
+    userResponses.push([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]);
 
 //lets assume the all users' score is like this.
 userScores = d3.range(1000)
@@ -24,8 +24,8 @@ userScores = d3.range(1000)
 
 
 $(document).on('ready page:load', function () {
-  var N = 30;
-  var setN = 4;
+  var N = 15;
+  var setN = 6;
   colorSets = [];
   
   for (var i = 0; i < setN; i++) {
@@ -34,15 +34,17 @@ $(document).on('ready page:load', function () {
 
   
   var results = colorSets.reduce(function(prev, colorSet, setIndex){    
-    
-    prev = prev.concat(colorSet.map(function(color, index, array){
+    var splicedColorSet = colorSet;
+    prev = prev.concat(splicedColorSet.map(function(color, index, array){
       return { 
-          "error" : (index === 0 || index === array.length-1) ? 0 : Math.abs(color.index - userResponses[setIndex][index-1]),
+          "error" : Math.abs(index - userResponses[setIndex][index] + 1),
+          "maxError": Math.max(index - 0, N - 1 - index),
           "color" : color.color,
           "index" : index + setIndex*N
         };     
     }));
     return prev;
+    
   },[]);
 
   
@@ -153,7 +155,7 @@ $(document).on('ready page:load', function () {
 
     var y = d3.scale.linear()
       .rangeRound([0, height])
-      .domain([0, N]);
+      .domain([0, 1]);
 
 
     var colors = svg.selectAll('.color')
@@ -168,25 +170,54 @@ $(document).on('ready page:load', function () {
                            .attr('width', function(d){ return x(d.index+1)-x(d.index);})
                            .attr('height', height )
                            .attr('fill', function(d){ return d.color.rgb(); });
-
-    // var errorBars = colors.append('rect')
-    //                        .attr('x', function(d){ return x(d.index); })
-    //                        .attr('y', function(d){ return height - y(d.error); } )
-    //                        .attr('width', function(d){ return x(d.index+1)-x(d.index);})
-    //                        .attr('height', function(d){ return y(d.error); })
-    //                        .attr('fill', '#fff')
-    //                        .attr('opacity', 0.7);
+    var intervals = colors.append('line')
+                        .filter(function(d){ return d.index%N===0 && d.index!==0;})
+                        .attr('x1', function(d){ return x(d.index);})
+                        .attr('x2', function(d){ return x(d.index);})
+                        .attr('y1', function(d){ return 0;})
+                        .attr('y2', function(d){ return height;})
+                        .attr('fill','none')
+                        .attr('stroke','black')
+                        .attr('opacity',0.18)
+                        .attr('stroke-width', 2);
 
     var line = d3.svg.line()
         .x(function(d){ return (x(d.index+1)+x(d.index))/2; })
-        .y(function(d){ return height - y(d.error); })
+        .y(function(d){ return y(d.error / d.maxError) + 2; })
         .interpolate('basis');
 
+    var line2 = d3.svg.line()
+      .x(function(d){ return (x(d.index+1)+x(d.index))/2; })
+      .y(function(d){ return y(d.error / d.maxError)+ 3.5; })
+      .interpolate('basis');
+
     svg.append('path')
-          .attr("d", line(results))
+        .attr("d", line(results))
+        .attr("stroke", "black")
+        .attr("stroke-width", 2)
+        .attr("fill", "none");
+        
+    svg.append('path')
+          .attr("d", line2(results))
           .attr("stroke", "white")
           .attr("stroke-width", 2)
           .attr("fill", "none");
+
+    svg.append('text')
+          .attr("x", width - 130)
+          .attr("y", 15 - margin.top)
+          .text("Tile in correct position")
+          
+    svg.append('text')
+          .attr("x", width - 170)
+          .attr("y", height + 15)
+          .text("Tile far from correct position")
+
+    svg.append('text')
+          .attr("x", 0)
+          .attr("y", height + 15)
+          .attr("fill", "#999")
+          .text("*Each interval represents the each part of sorting tasks.")
   }
 
   function makeColorSet(N, r, startAngle, endAngle, L){
