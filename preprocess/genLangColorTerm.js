@@ -1,7 +1,5 @@
 var fs = require('fs');
 
-
-
 var colorSet = JSON.parse(fs.readFileSync('data/naming_color_set_new.json', 'utf8'));
 var colorNamingResponses = JSON.parse(fs.readFileSync('data/color_names_in_different_languages.json', 'utf8'));
 
@@ -31,6 +29,10 @@ for (var i = 0; i < Nbin; i++) {
 for (var i = 0; i < colorNamingResponses.length; i++) {
   var response = colorNamingResponses[i];
   var responseName = response.name.toLowerCase();
+  if (responseName.trim() === '') {
+    continue;
+  };
+
   if(!data[response.lang0]){
     data[response.lang0] = {
       'colorNameCount': [],
@@ -50,20 +52,45 @@ for (var i = 0; i < colorNamingResponses.length; i++) {
   colorTerm.colorNameCount[colorTerm.terms.indexOf(responseName)][binNum(response)] += 1;
 
 };
-data.colorSet = binEndPoints.map(function(index){ return colorSet[index]; });
+
+Object.keys(data).map(function(key){
+  var termTotalCounts = data[key].colorNameCount.map(function(colorCount, index){
+    return { 
+      'term': data[key].terms[index],
+      'total' : colorCount.reduce(function(prev,count){
+          prev += count;
+          return prev;
+        },0),
+      'colorCount' : colorCount
+    };
+  });  
+  
+  data[key].terms = termTotalCounts
+                      .sort(function(a,b){ return -a.total + b.total; })
+                      .map(function(termTotalCount){ return termTotalCount.term; });
+  
+  data[key].colorNameCount = termTotalCounts
+                      .sort(function(a,b){ return -a.total + b.total; })
+                      .map(function(termTotalCount){ return termTotalCount.colorCount; });
+})
+
+
+
+data.colorSet = binEndPoints.map(function(index, i, array){ 
+  return colorSet[Math.round(i===0 ? index/2 : (index + array[i-1]) / 2)]; 
+});
+
+console.log(data.colorSet);
+
 
 fs.writeFile('data/final_color_name_language_data.json', JSON.stringify(data), 'utf8', function(){
-  Object.keys(data).map(function(key){
-    if (key !== 'colorSet') {
-      console.log(key + "," + data[key].totalCount);  
-    };
-    
-  })
+  
   
 })
 
 
-// console.log(data['Korean (한국어, 조선어)'].terms.indexOf('blue'));
+// console.log(data['Korean (한국어, 조선어)'].terms);
+// console.log(data['Korean (한국어, 조선어)'].colorNameCount[100]);
 
 
 
