@@ -2,7 +2,7 @@ $(document).on('ready page:load', function () {
   var Nbin, emptyNbin;
   
   
-  $.getJSON( "/data/final_color_name_language_data.json", function( data ) {
+  $.getJSON( "../data/final_color_name_language_data.json", function( data ) {
     Nbin = data.colorSet.length;
     emptyNbin = [];
     for (var i = 0; i < Nbin; i++) {
