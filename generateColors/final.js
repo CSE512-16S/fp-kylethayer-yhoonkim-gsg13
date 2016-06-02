@@ -59,7 +59,17 @@ $(document).on('ready page:load', function () {
 
       var toggle = false;
       
-      var term = $(targetSelector).append('<h3 id="'+targetSelector.replace('#','')+'-selected-title" class="text-center">Color Name <small>google translation</small></h3>');
+      var termDiv = $('<div class="termDiv table-center"></div>');
+      termDiv.append('<div class="main-term" id="'+targetSelector.replace('#','')+'-selected-title" class="text-center">Color Name</div>')
+      if (lang ==='Korean (한국어, 조선어)') {
+        termDiv.append('<div class="translation" ><div class="tr-result" id="ko-en" ></div><div class="google"></div></div>')  
+      }
+      else{
+        termDiv.append('<div class="translation" ><div class="tr-result"  id="en-ko"></div><div class="google"></div></div>')
+      }
+      
+      
+      var term = $(targetSelector).append(termDiv);
       var line = d3.svg.line()
           .interpolate("basis")
           .x(function(d,i) { return x(i); })
@@ -164,18 +174,20 @@ $(document).on('ready page:load', function () {
       function dehighlight(){
         svg.selectAll('.line')
           .attr('opacity',1);
-        $(targetSelector+"-selected-title").html('Color Name <small>google translation</small>'); 
+        $(targetSelector+"-selected-title").html('Color Name '); 
+        $('.tr-result').html('');
+        $('.google').html('');
       }
       function highlight(d, i, clicked){
         svg.selectAll('.line1')
           .attr('opacity', function(g,j){ 
             if (j==i) {
               if (lang === 'Korean (한국어, 조선어)') {
-                $(targetSelector+"-selected-title").html(data_terms[j]+' <small id="ko-en"></small>'); 
+                $(targetSelector+"-selected-title").html(data_terms[j]); 
                 translate(data_terms[j]+'색','ko','en'); 
               } 
               else{
-                $(targetSelector+"-selected-title").html(data_terms[j]+' <small id="en-ko"></small>');  
+                $(targetSelector+"-selected-title").html(data_terms[j]);  
                 translate(data_terms[j],'en','ko'); 
               };
               
@@ -198,6 +210,7 @@ $(document).on('ready page:load', function () {
     function translate(q,sLang,tLang){
       $.getJSON('https://www.googleapis.com/language/translate/v2?key=AIzaSyAT-kyweEHlnjMpEazBrS1T-oxPhKPLNXY&source='+sLang+'&target='+tLang+'&q='+q, function(data){
         $('#'+sLang+'-'+tLang).html(data.data.translations[0].translatedText);
+        $('#'+sLang+'-'+tLang).siblings('.google').html('by google translation');
       });
     }
     function dataProcess(){
