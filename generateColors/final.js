@@ -59,7 +59,7 @@ $(document).on('ready page:load', function () {
 
       var toggle = false;
       
-      var term = $(targetSelector).append('<h1 id="'+targetSelector.replace('#','')+'-selected-title" class="text-center">Color Name <small>google translation</small></h1>');
+      var term = $(targetSelector).append('<h3 id="'+targetSelector.replace('#','')+'-selected-title" class="text-center">Color Name <small>google translation</small></h3>');
       var line = d3.svg.line()
           .interpolate("basis")
           .x(function(d,i) { return x(i); })
