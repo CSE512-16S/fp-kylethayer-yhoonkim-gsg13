@@ -28,6 +28,8 @@ for (var i = 0; i < Nbin; i++) {
 // for (var i = 0; i < 2; i++) {
 for (var i = 0; i < colorNamingResponses.length; i++) {
   var response = colorNamingResponses[i];
+  var bin = binNum(response);
+  response['bin'] = bin;
   var responseName = response.name.toLowerCase();
   if (responseName.trim() === '') {
     continue;
@@ -48,7 +50,7 @@ for (var i = 0; i < colorNamingResponses.length; i++) {
     colorTerm.colorNameCount.push(empty36.slice());
   }
 
-  colorTerm.colorNameCount[colorTerm.terms.indexOf(responseName)][binNum(response)] += 1;
+  colorTerm.colorNameCount[colorTerm.terms.indexOf(responseName)][bin] += 1;
 
 };
 
@@ -72,9 +74,6 @@ Object.keys(data).map(function(key){
                       .sort(compare)
                       .map(function(termTotalCount){ return termTotalCount.colorCount; });
 
-  if(key === 'Korean (한국어, 조선어)'){
-    console.log(termTotalCounts.sort(compare)[15]);
-  }
 })
 
 
@@ -91,7 +90,9 @@ fs.writeFile('data/final_color_name_language_data.json', JSON.stringify(data), '
   
 })
 
-
+fs.writeFile('data/color_name_language_bint_data.json', JSON.stringify(colorNamingResponses), 'utf8', function(){
+  console.log(colorNamingResponses);
+})
 // console.log(data['Korean (한국어, 조선어)'].terms);
 // console.log(data['Korean (한국어, 조선어)'].colorNameCount[100]);
 
