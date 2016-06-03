@@ -14,8 +14,24 @@ $(document).on('ready page:load', function () {
     //term  : plot (c, prob(c | term = t) ) -> Integral of each line should be 1.0
     drawLangSpec('#vis0', data,'English (English)', data['colorSet'], whichProb, 20);
     drawLangSpec('#vis1', data,'Korean (한국어, 조선어)', data['colorSet'], whichProb, 20);
+    // drawLangSpec('#vis2', data,'Polish (język polski, polszczyzna)', data['colorSet'], whichProb, 20);
+    // drawLangSpec('#vis3', data,'Korean (한국어, 조선어)', data['colorSet'], whichProb, 20);
+    // drawLangSpec('#vis4', data,'Korean (한국어, 조선어)', data['colorSet'], whichProb, 20);
     
-
+    // English (English)
+    // Korean (한국어, 조선어)
+    // Urdu (اردو)
+    // Spanish (español)
+    // Russian (Русский)
+    // Thai (ไทย)
+    // French (français, langue française)
+    // German (Deutsch)
+    // Norwegian Bokmål (Norsk bokmål)
+    // Polish (język polski, polszczyzna)
+    // Portuguese (português)
+    // Chinese (中文 (Zhōngwén), 汉语, 漢語)
+    // Japanese (日本語 (にほんご))
+    // Hebrew (modern) (עברית)
   });
 
   
@@ -35,7 +51,7 @@ $(document).on('ready page:load', function () {
       
       var margin = {top: 30, right: 50, bottom: 10, left: 50},
           width = $(targetSelector).width() - margin.left - margin.right,
-          height = 250 - margin.top - margin.bottom;
+          height = 200 - margin.top - margin.bottom;
 
       var x = d3.scale.linear()
           .range([0, width])
@@ -72,6 +88,7 @@ $(document).on('ready page:load', function () {
       var term = $(targetSelector).append(termDiv);
       var line = d3.svg.line()
           .interpolate("basis")
+          // .interpolate("linear")
           .x(function(d,i) { return x(i); })
           .y(function(d,i) { return y(d); });
 

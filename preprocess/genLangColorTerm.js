@@ -74,6 +74,7 @@ Object.keys(data).map(function(key){
                       .sort(compare)
                       .map(function(termTotalCount){ return termTotalCount.colorCount; });
 
+  console.log(key);
 })
 
 
@@ -91,7 +92,7 @@ fs.writeFile('data/final_color_name_language_data.json', JSON.stringify(data), '
 })
 
 fs.writeFile('data/color_name_language_bint_data.json', JSON.stringify(colorNamingResponses), 'utf8', function(){
-  console.log(colorNamingResponses);
+  // console.log(colorNamingResponses);
 })
 // console.log(data['Korean (한국어, 조선어)'].terms);
 // console.log(data['Korean (한국어, 조선어)'].colorNameCount[100]);
