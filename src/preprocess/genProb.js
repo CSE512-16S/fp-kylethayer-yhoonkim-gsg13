@@ -8,6 +8,7 @@ for (var i = 0; i < Nbin; i++) {
 };
 
 dataProcess(20, false, 'English (English)', 'color');
+dataProcess(20, false, 'Korean (한국어, 조선어)', 'color');
 
 function dataProcess(topN, cutN, lang, whichProb){
 
@@ -91,9 +92,9 @@ function dataProcess(topN, cutN, lang, whichProb){
 
 
   console.log(processed2);
-  fs.writeFile('data/language_name_binnedColor_v1.json', JSON.stringify(processed1), 'utf8', function(){
+  fs.writeFile('data/'+lang+'language_name_binnedColor_v1.json', JSON.stringify(processed1), 'utf8', function(){
   });
-  fs.writeFile('data/language_name_binnedColor_v2.json', JSON.stringify(processed2), 'utf8', function(){
+  fs.writeFile('data/'+lang+'language_name_binnedColor_v2.json', JSON.stringify(processed2), 'utf8', function(){
   });
 
   // //Repeating 0.5 times more
