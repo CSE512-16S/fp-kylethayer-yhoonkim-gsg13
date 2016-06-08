@@ -19,13 +19,14 @@ A breakdown of how the work was split among the group members and a commentary o
 - Statistical Analysis : Gabriella Gorsky
 - Documentation
   - Gabriella Gorsky
+    - Proposal
     - Progress report 
-    - Poster : Motive, Analysis& Results, Citations, Limitation & Future Work
-    - Paper : Introduction, Related Work, Result(Exploratory Statistics), Discussion, Conclusion
+    - Poster : Motive, Analysis & Results, Limitations & Future Work, Citations
+    - Paper : Introduction, Related Work, Results (exploratory statistics), Discussion, Conclusion
   - Kyle Thayer
-    - Poster : Study design, Limitation & Future Work
+    - Poster : Study design, Limitations & Future Work
     - Paper : Data Collection, Discussion, Conclusion
   - Younghoon Kim 
-    - Poster : Figures, Limitation & Future Work
-    - Paper : Result(general Visualization), Discussion, Conclusion
+    - Poster : Figures, Limitations & Future Work
+    - Paper : Results (general visualization), Discussion, Conclusion
 
