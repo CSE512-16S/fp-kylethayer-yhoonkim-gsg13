@@ -18,9 +18,10 @@ A breakdown of how the work was split among the group members and a commentary o
 - Visualization Development : Younghoon Kim
 - Statistical Analysis : Gabriella Gorsky
 - Documentation
-  - Gabriella Gorsky
+  - All
     - Proposal
-    - Progress report 
+  - Gabriella Gorsky
+    - Progress report
     - Poster : Motive, Analysis & Results, Limitations & Future Work, Citations
     - Paper : Introduction, Related Work, Results (exploratory statistics), Discussion, Conclusion
   - Kyle Thayer
