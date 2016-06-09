@@ -22,12 +22,12 @@ A breakdown of how the work was split among the group members and a commentary o
     - Proposal
   - Gabriella Gorsky
     - Progress report
-    - Poster : Motive, Analysis & Results, Limitations, Future Work, Citations
-    - Paper : Introduction, Related Work, Results (exploratory statistics), Discussion, Conclusion
+    - Poster : Motive, Analysis & Results, Limitations & Future Work, Citations
+    - Paper : Introduction, Related Work, Results (exploratory statistics), Discussion, Limitations & Future Work, Conclusion
   - Kyle Thayer
     - Poster : Study design, Limitations & Future Work
-    - Paper : Data Collection, Limitations
+    - Paper : Data Collection, Limitations & Future Work
   - Younghoon Kim 
     - Poster : Figures, Limitations & Future Work
-    - Paper : Results (general visualization), Limitations
+    - Paper : Results (general visualization), Limitations & Future Work
 
